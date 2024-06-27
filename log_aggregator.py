@@ -13,7 +13,7 @@ def extract_domain(domain: str) -> str:
     """
     domain_parts = domain.strip("*").split(".")
     if len(domain_parts) > 2 and (
-        domain_parts[-2] == "co" or domain_parts[-2] == "com"
+        domain_parts[-2] in ("co", "com")
     ):
         return ".".join(domain_parts[-3:])
     else:
@@ -34,8 +34,7 @@ def aggregate_counts(log_file: str) -> dict:
     domains_count = {}
     lines = log_file.strip().split("\n")
     for line in lines:
-        parts = line.split()
-        domain, count = parts
+        domain, count = line.split()
         count = int(count)
         formatted_domain = extract_domain(domain)
         if formatted_domain in domains_count:
